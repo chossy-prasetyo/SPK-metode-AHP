@@ -1,0 +1,42 @@
+# index_rasio
+	> jumlah 									(int, primary)
+	> nilai										(float)
+
+# kriteria
+	> id 											(int, primary, auto_increment)
+	> kriteria 								(varchar)
+
+# kriteria_perbandingan
+	> id 											(int, primary, auto_increment)
+	> id_kriteria1						(int)
+	> id_kriteria2						(int)
+	> nilai										(float)
+
+# kriteria_bobot
+	> id_kriteria 						(int, primary)
+	> nilai										(float)
+
+# karyawan
+	> id 											(int, primary, auto_increment)
+	> karyawan 								(varchar)
+	> gender									(varchar)
+	> jabatan									(varchar)
+	> status									(varchar)
+	> tanggal_bergabung				(date)
+
+# karyawan_perbandingan
+	> id 											(int, primary, auto_increment)
+	> id_karyawan1						(int)
+	> id_karyawan2						(int)
+	> id_kriteria 						(int)
+	> nilai										(float)
+
+# karyawan_bobot
+	> id 											(int, primary, auto_increment)
+	> id_karyawan 						(int)
+	> id_kriteria 						(int)
+	> nilai										(float)
+
+# karyawan_ranking
+	> id_karyawan 						(int, primary)
+	> nilai										(float)

@@ -1,0 +1,207 @@
+ALGORITMA YG DITERAPKAN
+-----------------------
+
+
+Metode AHP Elsi
+===============
+
+- input nilai kriteria
+- buat matriks nilai perbandingan
+- jumlahkan nilai setiap kolomnya
+- buat matriks eigen vektor
+- jumlahkan nilai setiap barisnya
+- jumlahkan jumlah barisnya
+- hitung nilai bobot kriteria
+- cek konsistensi nilai perbandingan
+	> hitung lambda max
+	> hitung index konsistensi
+	> hitung rasio konsistensi
+
+
+
+Input Perbandingan Kriteria
+===========================
+
+# query kriteria dan hitung jumlahnya
+# tampilkan form input nilai perbandingan
+	
+	> kriteria tidak boleh kurang dari 3
+	> buat logika perbandingan kriteria berdasarkan jumlahnya
+
+		3x3 -> 2+1 = 3 perbandingan
+		0	1	1
+		0	0	1
+		0	0	0
+
+		4x4	-> 3+2+1 = 6 perbandingan
+		0	1	1	1
+		0	0	1	1
+		0	0	0	1
+		0	0	0	0
+
+		5x5	-> 4+3+2+1 = 10 perbandingan
+		0	1	1	1	1
+		0	0	1	1	1
+		0	0	0	1	1
+		0	0	0	0	1
+		0	0	0	0	0
+
+		~ bandingakan setiap kriteria dg kriteria yg lain hingga habis
+			- kriteria1 : jumlah kriteria kurangi 2
+			- kriteria2 : kriteria1 + 1, jumlah kriteria kurangi 1
+		~ tampilkan input perbandingan
+
+# kelola nilai perbandingan yg diinputkan
+	
+	> query kriteria dan hitung jumlahnya
+	> buat matriks perbandingan kriteria
+		~ ambil input setiap perbandingan kriteria
+		~ insert / update database
+			- jika perbandingan belum ada -> insert
+			- jika perbandingan sudah ada -> update
+		~ isi diagonal matriks perbandingan dg nilai 1
+	> buat matriks eigen vektor
+		~ jumlahkan nilai di setiap kolom matriks
+		~ buat matriks eigen vektor
+			- setiap nilai matriks dibagi dg jumlah kolomnya
+		~ jumlahkan nilai di setiap baris matriks
+		~ jumlahkan semua nilai
+		~ hitung nilai bobot kriteria
+			- bagi jumlah setiap baris dg jumlah semua nilai
+		~ insert / update database
+			- jika bobot belum ada -> insert
+			- jika bobot sudah ada -> update
+	> cek konsistensi nilai perbandingan
+		~ jumlahkan nilai bobot
+		~ hitung lambda max
+			- (jumlah matriks eigen vektor + jumlah bobot) / jumlah kriteria
+		~ hitung index konsistensi (ci)
+			- (lambda max - jumlah kriteria) / (jumlah kriteria - 1)
+		~ hitung rasio konsistensi (cr)
+			- query nilai rasio index (ir) berdasarkan jumlah kriteria
+			- ci / ir
+
+# tampilkan hasil perhitungan bobot kriteria
+	> tampilkan matriks perbandingan
+	> tampilkan matriks eigen vektor
+	> tampilkan nilai bobot, lambda max, ci, cr
+		~ jika nilai cr bagus, tampilkan tombol next
+		~ jika nilai cr buruk, beri notif dan tampilkan tombol kembali
+
+
+
+Input Perbandingan Karyawan
+===========================
+
+# query karyawan dan hitung jumlahnya
+# query kriteria dan hitung jumlahnya
+# tampilkan form input nilai perbandingan
+	
+	> karyawan tidak boleh kurang dari 3
+	> kriteria tidak boleh kurang dari 3
+	> pilih kriteria yg dirujuk
+	> buat logika perbandingan karyawan berdasarkan jumlahnya
+
+		3x3 -> 2+1 = 3 perbandingan
+		0	1	1
+		0	0	1
+		0	0	0
+
+		4x4	-> 3+2+1 = 6 perbandingan
+		0	1	1	1
+		0	0	1	1
+		0	0	0	1
+		0	0	0	0
+
+		5x5	-> 4+3+2+1 = 10 perbandingan
+		0	1	1	1	1
+		0	0	1	1	1
+		0	0	0	1	1
+		0	0	0	0	1
+		0	0	0	0	0
+
+		~ bandingakan setiap karyawan dg karyawan yg lain hingga habis
+			- karyawan1 : jumlah karyawan kurangi 2
+			- karyawan2 : karyawan1 + 1, jumlah karyawan kurangi 1
+		~ tampilkan input perbandingan
+
+# kelola nilai perbandingan yg diinputkan
+	
+	> query karyawan dan hitung jumlahnya
+	> buat matriks perbandingan karyawan
+		~ ambil input setiap perbandingan karyawan
+		~ insert / update database berdasarkan kriteria yg dirujuk
+			- jika perbandingan belum ada -> insert
+			- jika perbandingan sudah ada -> update
+		~ isi diagonal matriks perbandingan dg nilai 1
+	> buat matriks eigen vektor
+		~ jumlahkan nilai di setiap kolom matriks
+		~ buat matriks eigen vektor
+			- setiap nilai matriks dibagi dg jumlah kolomnya
+		~ jumlahkan nilai di setiap baris matriks
+		~ jumlahkan semua nilai
+		~ hitung nilai bobot karyawan
+			- bagi jumlah setiap baris dg jumlah semua nilai
+		~ insert / update database
+			- jika bobot belum ada -> insert
+			- jika bobot sudah ada -> update
+	> cek konsistensi nilai perbandingan
+		~ jumlahkan nilai bobot
+		~ hitung lambda max
+			- (jumlah matriks eigen vektor + jumlah bobot) / jumlah karyawan
+		~ hitung index konsistensi (ci)
+			- (lambda max - jumlah karyawan) / (jumlah karyawan - 1)
+		~ hitung rasio konsistensi (cr)
+			- query nilai rasio index (ir) berdasarkan jumlah karyawan
+			- ci / ir
+
+# tampilkan hasil perhitungan bobot karyawan
+	> tampilkan matriks perbandingan
+	> tampilkan matriks eigen vektor
+	> tampilkan nilai bobot, lambda max, ci, cr
+		~ jika nilai cr bagus, tampilkan tombol next
+		~ jika nilai cr buruk, beri notif dan tampilkan tombol kembali
+	> lanjutkan input perbandingan untuk kriteria lainnya hingga selesai
+
+
+
+Menampilkan Laporan
+===================
+
+# query kriteria dan hitung jumlahnya
+	> kriteria tidak boleh kurang dari 3
+	> bobot kriteria harus sudah dihitung
+# query karyawan dan hitung jumlahnya
+	> karyawan tidak boleh kurang dari 3
+	> bobot karyawan harus sudah dihitung untuk setiap kriteria
+# hitung ranking karyawan
+	> kalikan bobot karyawan dg bobot kriteria kemudian jumlahkan
+	> insert / update database
+		~ jika ranking belum ada -> insert
+		~ jika ranking sudah ada -> update
+# tampilkan ranking karyawan
+# tampilkan setiap bobot kriteria dan karyawan
+
+
+
+Hapus Kriteria
+==============
+
+# hapus dari kriteria_perbandingan
+	> jika sudah 3, hapus semua saja
+# hapus dari karyawan_perbandingan
+	> jika sudah 3, hapus semua saja
+# hapus dari karyawan_bobot
+	> jika sudah 3, hapus semua saja
+# hapus semua kriteria_bobot
+# hapus semua karyawan_ranking
+# hapus dari kriteria
+
+Hapus Karyawan
+==============
+
+# hapus dari karyawan_perbandingan
+	> jika sudah 3, hapus semua saja
+# hapus semua karyawan_bobot
+# hapus semua karyawan_ranking
+# hapus dari karyawan

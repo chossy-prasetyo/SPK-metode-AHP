@@ -1,4 +1,11 @@
 <?php
+session_start();
+if(!isset($_SESSION['login'])){
+  header('Location: index.php');
+  exit;
+}
+
+
 include "koneksi.php";
 
 $menu = [
@@ -89,6 +96,13 @@ $active = $segment[0].'.'.$ekstensi[1];
                 </a>
               </li>
             <?php } ?>
+
+            <li class="nav-item">
+              <a class="nav-link" href="logout.php" onclick="return confirm('Logout ?');">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+              </a>
+            </li>
 
           </ul>
         </div>

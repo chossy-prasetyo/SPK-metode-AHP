@@ -1,31 +1,47 @@
 <?php
 session_start();
 if(isset($_SESSION['login'])){
-	header('Location: dashboard.php');
-	exit;
+  header('Location: dashboard.php');
+  exit;
 }
 
 include 'koneksi.php';
 
-if(isset($_POST['login'])){
+if(isset($_POST['daftar'])){
 
-	$email = $_POST['email'];
+  $email = $_POST['email'];
 
-	$result = mysqli_query($kon,"SELECT * FROM user WHERE email='$email'");
-	if(mysqli_num_rows($result) === 1){
-		$password = $_POST['password'];
-		$account = mysqli_fetch_assoc($result);
+  $result = mysqli_query($kon,"SELECT email FROM user WHERE email='$email'");
 
-		if(password_verify($password,$account['password'])){
-			$_SESSION['login'] = true;
-			header('Location: dashboard.php');
-			exit;
-		}	else{
-			$error = 'password salah!';
-		}
-	} else{
-		$error = "username tidak terdaftar, registrasi terlebih dahulu, klik link di bawah!";
-	}
+  if(mysqli_num_rows($result) == 0){
+
+    $password = mysqli_real_escape_string($kon,$_POST['password']);
+    $password2 = mysqli_real_escape_string($kon,$_POST['password2']);
+
+    if($password2 == $password){
+
+      $password = password_hash($password,PASSWORD_DEFAULT);
+
+      mysqli_query($kon,"INSERT INTO user VALUES ('','$email','$password')");
+
+      if(mysqli_affected_rows($kon) > 0){
+        echo '<script>
+                alert("registrasi berhasil");
+                document.location.href = "index.php";
+              </script>';
+      } else{
+        echo '<script>
+                alert("registrasi gagal");
+              </script>';
+        echo mysqli_error($kon);
+      }
+    } else{
+      $error = 'konfirmasi password salah!';
+    }
+  } else{
+    $error = 'email sudah terdaftar!';
+  }
+
 }
 ?>
 
@@ -48,16 +64,16 @@ if(isset($_POST['login'])){
       <div class="row justify-content-center">
         <div class="col-4">
           <div class="card mt-5 shadow-lg">
-            <h5 class="card-header bg-success text-light text-center" style="padding: 24px 15px 24px 15px;">Halaman Login</h5>
+            <h5 class="card-header bg-success text-light text-center" style="padding: 24px 15px 24px 15px;">Halaman Registrasi</h5>
             <div class="card-body p-4">
           		<form method="post">
 
-                <!-- Notifikasi Login -->
+                <!-- Notifikasi Registrasi -->
                 <?php if(isset($error)): ?>
                   <p class="text-center font-italic text-danger"><?= $error; ?></p>
                 <?php endif; ?>
 
-                <!-- Input Userame -->
+                <!-- Input Email -->
 								<div class="input-group mb-4">
 								  <div class="input-group-prepend">
 								    <span class="input-group-text" id="basic-addon1">
@@ -77,16 +93,23 @@ if(isset($_POST['login'])){
 								  <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required>
 								</div>
 
+                <!-- Input Password -->
+                <div class="input-group mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">
+                      <i class="fas fa-key"></i>
+                    </span>
+                  </div>
+                  <input type="password" name="password2" class="form-control" placeholder="Ulangi Password" aria-label="Password" aria-describedby="basic-addon1" required>
+                </div>
+
                 <!-- Tombol Login -->
-            		<button class="btn btn-block btn-success mt-3" type="submit" name="login">Login</button>
+            		<button class="btn btn-block btn-success mt-3" type="submit" name="daftar">Daftar</button>
 
             	</form>
 
-							<p class="text-center font-weight-light">belum ada account ? klik link di bawah untuk registrasi</p>
+							<p class="text-center font-weight-light">kembali ke halaman <a href="index.php">Login</a></p>
 							<div class="row justify-content-center">
-								<div class="col-auto">
-									<a href="registrasi.php" class="btn btn-sm btn-outline-success">Registrasi</a>
-								</div>
 							</div>
             </div>
           </div>          
